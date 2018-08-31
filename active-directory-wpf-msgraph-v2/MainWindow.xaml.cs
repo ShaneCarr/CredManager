@@ -28,9 +28,13 @@ namespace active_directory_wpf_msgraph_v2
         string graphAPIEndpoint = "https://graph.microsoft.com/v1.0/me";
         public IPlatformParameters PlatformParameters { get; set; }
         //Set the scope for API call to user.read
-        string[] scopes = ConfigurationSettings.AppSettings["access"].Split(',');
+        string[] scopes;
+        string[] scopesGraph = ConfigurationSettings.AppSettings["scopesGraph"].Split(',');
+        string[] scopesRest = ConfigurationSettings.AppSettings["scopesRest"].Split(',');
+ 
+        
 
-        public MainWindow()
+    public MainWindow()
         {
             InitializeComponent();
         }
@@ -52,10 +56,18 @@ namespace active_directory_wpf_msgraph_v2
             ////    ConfigurationSettings.AppSettings["clientId"],
             ////    new Uri(ConfigurationSettings.AppSettings["ida:RedirectUri"]),
             ////    p ).GetAwaiter().GetResult();
+            if (this.isRest.IsChecked.Value)
+            {
+                scopes = this.scopesRest;
+            }
+            else
+            {
+                scopes = this.scopesGraph;
+            }
 
             try
             {
-                authResult = await app.AcquireTokenSilentAsync(scopes, app.Users.FirstOrDefault());
+                authResult = await app.AcquireTokenAsync(scopes, app.Users.FirstOrDefault());
             }
             catch (MsalUiRequiredException ex)
             {
@@ -145,6 +157,11 @@ namespace active_directory_wpf_msgraph_v2
                 TokenInfoText.Text += $"Token Expires: {authResult.ExpiresOn.ToLocalTime()}" + Environment.NewLine;
                 TokenInfoText.Text += $"Access Token: {authResult.AccessToken}" + Environment.NewLine;
             }
+        }
+
+        private void isRest_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

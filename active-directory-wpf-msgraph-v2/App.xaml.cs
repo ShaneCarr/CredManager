@@ -23,8 +23,6 @@ namespace active_directory_wpf_msgraph_v2
         private static string ClientId = ConfigurationSettings.AppSettings["clientId"];
 
 
-        public const string MsaClientId = "b2ffd5d2-ebfb-461a-964d-163ecd43e05a";
-        public const string MsaReturnUrl = "urn:ietf:wg:oauth:2.0:oob";
 
 
         private static PublicClientApplication _clientApp ;
